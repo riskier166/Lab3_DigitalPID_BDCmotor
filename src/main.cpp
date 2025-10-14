@@ -5,9 +5,7 @@ static void IRAM_ATTR timerISR(void *arg);
 extern "C" void app_main()
 {
     esp_task_wdt_deinit();
-    MOTOR_PWM.setup(PWM_PIN, PWMCH, &motor_pwm_config);
-    COUNT_CLKWISE.setup(COUNT_CLKW, GPO);
-    COUNT_CNTCLKWISE.setup(COUNT_CNTCLKW, GPO);
+    MOTOR_PWM.setup(PWM_PIN, PWMCH, COUNT_CLKW, COUNT_CNTCLKW);
     timer.setup(timerISR, "MAIN Timer");timer.startPeriodic(dt_us);
     while (1){
         if (timer.interruptAvailable())
@@ -15,18 +13,9 @@ extern "C" void app_main()
             message_length = uart.available();
             if (e_state == 1)
             {
-                if (dir==1){
-                COUNT_CLKWISE.set(1);COUNT_CNTCLKWISE.set(0);
-                    MOTOR_PWM.setDuty(duty);
-                }
-                else if (dir==0){
-                    COUNT_CLKWISE.set(0);COUNT_CNTCLKWISE.set(1);
-                    MOTOR_PWM.setDuty(duty);
-                }
-                else continue;
+                MOTOR_PWM.setSpeed(duty, dir);
             } else {
-                MOTOR_PWM.setDuty(0.0);
-                COUNT_CLKWISE.set(0);COUNT_CNTCLKWISE.set(0);
+                MOTOR_PWM.setStop();
             }
             message_length = uart.available();
             if (message_length)
