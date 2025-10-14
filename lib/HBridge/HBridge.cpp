@@ -4,38 +4,33 @@ HBridge::HBridge()
 {
 }
 
-void HBridge::setup(uint8_t pwm_pin, uint8_t pwm_channel, uint8_t clk_pin, uint8_t cclk_pin)
+void HBridge::setup(uint8_t pwm_pin[], uint8_t pwm_channel[])
 {
-    hbridge_pwm.setup(pwm_pin, pwm_channel, &motor_pwm_config);
-    clk.setup(clk_pin, GPO);
-    cclk.setup(cclk_pin, GPO);
+    PWM_CCLKW.setup(pwm_pin[0], pwm_channel[0], &motor_pwm_config);
+    PWM_CLKW.setup(pwm_pin[1], pwm_channel[1], &motor_pwm_config);
 }
 
-void HBridge::setSpeed(float speed, uint8_t dir)
+void HBridge::setSpeed(float speed)
 {
-    if (dir == 1)
+    if (speed > 0.0 && speed < 100.0)
     {
-        clk.set(1);
-        cclk.set(0);
-        hbridge_pwm.setDuty(speed);
+        PWM_CLKW.setDuty(speed);
+        PWM_CCLKW.setDuty(0.0);
     }
-    else if (dir == 0)
+    else if (speed < 0.0 && speed > -100.0)
     {
-        clk.set(0);
-        cclk.set(1);
-        hbridge_pwm.setDuty(speed);
+        PWM_CLKW.setDuty(0.0);
+        PWM_CCLKW.setDuty(-speed);
     }
     else
     {
-        hbridge_pwm.setDuty(0.0);
-        clk.set(0);
-        cclk.set(0);
+        PWM_CLKW.setDuty(0.0);
+        PWM_CCLKW.setDuty(0.0);
     }
 }
 
 void HBridge::setStop()
 {
-    hbridge_pwm.setDuty(0.0);
-    clk.set(0);
-    cclk.set(0);
+    PWM_CLKW.setDuty(0.0);
+    PWM_CCLKW.setDuty(0.0);
 }
