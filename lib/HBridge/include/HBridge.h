@@ -16,8 +16,8 @@ private:
     SimplePWM PWM_CCLKW;
     TimerConfig motor_pwm_config{// Structure for timer configuration
                                  .timer = LEDC_TIMER_0,
-                                 .frequency = 10000, // Frequency in Hz
-                                 .bit_resolution = LEDC_TIMER_8_BIT,
+                                 .frequency = 20000, // Frequency in Hz
+                                 .bit_resolution = LEDC_TIMER_10_BIT,
                                  .mode = LEDC_LOW_SPEED_MODE};
 };
 

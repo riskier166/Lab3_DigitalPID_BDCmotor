@@ -12,20 +12,15 @@ void HBridge::setup(uint8_t pwm_pin[], uint8_t pwm_channel[])
 
 void HBridge::setSpeed(float speed)
 {
-    if (speed > 0.0 && speed < 100.0)
+    if (speed > 0.0)
     {
         PWM_CLKW.setDuty(speed);
         PWM_CCLKW.setDuty(0.0);
     }
-    else if (speed < 0.0 && speed > -100.0)
-    {
-        PWM_CLKW.setDuty(0.0);
-        PWM_CCLKW.setDuty(-speed);
-    }
     else
     {
         PWM_CLKW.setDuty(0.0);
-        PWM_CCLKW.setDuty(0.0);
+        PWM_CCLKW.setDuty(-speed);
     }
 }
 
