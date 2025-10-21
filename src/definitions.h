@@ -8,6 +8,12 @@
 #include <HBridge.h>
 #include <QuadratureEncoder.h>
 #include "esp_task_wdt.h" //Watch Dog 
+#include "PID.h"
+
+//PID stuff
+PID control;
+float gains[3] = {0,0,0};
+float reference;
 
 //HBridge Stuff
 uint8_t PWM_PIN[2] = {25, 26};uint8_t PWMCH[2] = {0, 1}; //PWM Channels
