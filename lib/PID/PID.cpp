@@ -18,6 +18,7 @@ float PID::calc(float error)
     U+=Kd*(error-prev_error)/dt;
     integral+=(dt/2)*(error+prev_error);
     U+=Ki*integral;
+    prev_error=error;
 
     return U;
 

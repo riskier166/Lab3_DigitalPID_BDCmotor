@@ -12,8 +12,19 @@
 
 //PID stuff
 PID control;
-float gains[3] = {0,0,0};
-float reference;
+float gains[3];
+float reference=0;
+int mode;
+
+float measurement;float error; float u;
+
+enum MODE{
+    NOTHING = 0,
+    SPEED_CONTROL,
+    ANGULAR_CONTROL,
+    PWM_CONTROL,
+};
+MODE current_mode;
 
 //HBridge Stuff
 uint8_t PWM_PIN[2] = {25, 26};uint8_t PWMCH[2] = {0, 1}; //PWM Channels
@@ -31,10 +42,5 @@ uint64_t dt_us = 10000; // 10 ms = 10000 us
 //UART Stuff
 SimpleUART uart(115200); //UART class
 char buffer[30];int message_length;
-
-// Control stuff
-float duty; 
-float Kp; float Ki; float Kd;
-float angle; float error; float ref_angle; float U_x;
 
 #endif // __DEFINITIONS_H__
